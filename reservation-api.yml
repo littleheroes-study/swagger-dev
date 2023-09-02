@@ -9,3 +9,35 @@ tags:
     description: "予約機能"
 
 paths:
+  /reservations:
+    get:
+      tags: [reservation]
+      description: 予約一覧を取得する
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    hair_salon:
+                      type: string
+                      description: 店舗名
+                    hairdresser:
+                      type: string
+                      description: 美容師
+                    reservation_id:
+                      type: string
+                      description: 予約ID
+                    reservation_date_time:
+                      type: string
+                      description: 予約日時
+                      format: date-time
+                  example:
+                    hair_salon: バーバー駒沢
+                    hairdresser: 山田太郎
+                    reservation_id: 2baf3032-4781-11ee-be56-0242ac120002
+                    reservation_date_time: '2023-12-31T10:30:00+09:00'
