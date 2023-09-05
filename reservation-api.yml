@@ -1,7 +1,16 @@
-openapi: 3.0.0
+openapi: "3.0.3"
 
 info:
-  title: "美容室の予約API"
+  title: "美容室予約"
+  description: |
+    # 説明
+    * 美容室の予約、確認を行うAPI
+    # 機能
+    - Reservations 一覧取得
+    - Reservations 登録
+    - Reservations 取得
+    - Reservations 更新
+    - Reservations 削除
   version: "1.0.0"
 
 tags:
@@ -11,33 +20,79 @@ tags:
 paths:
   /reservations:
     get:
+      operationId: getReservations
+      summary: "Reservations 一覧取得"
       tags: [reservation]
-      description: 予約一覧を取得する
+      description: "予約一覧を取得する"
       responses:
-        200:
-          description: Success
+        "200":
+          description: "Success"
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  type: object
-                  properties:
-                    hair_salon:
-                      type: string
-                      description: 店舗名
-                    hairdresser:
-                      type: string
-                      description: 美容師
-                    reservation_id:
-                      type: string
-                      description: 予約ID
-                    reservation_date_time:
-                      type: string
-                      description: 予約日時
-                      format: date-time
-                  example:
-                    hair_salon: バーバー駒沢
-                    hairdresser: 山田太郎
-                    reservation_id: 2baf3032-4781-11ee-be56-0242ac120002
-                    reservation_date_time: '2023-12-31T10:30:00+09:00'
+                  $ref: "#/components/schemas/ReservationInfo"
+        "400":
+          $ref: "#/components/responses/400-BadRequest"
+        "403":
+          $ref: "#/components/responses/403-Forbidden"
+        "500":
+          $ref: "#/components/responses/500-InternalServerError"
+
+components:
+  schemas:
+    ReservationInfo:
+      type: object
+      properties:
+        hair_salon:
+          description: "店舗名"
+          type: string
+        hairdresser:
+          description: "美容師"
+          type: string
+        reservation_id:
+          description: "予約ID"
+          type: string
+        reservation_date_time:
+          description: "予約日時"
+          type: string
+          format: date-time
+      example:
+        hair_salon: "バーバー駒沢"
+        hairdresser: "山田太郎"
+        reservation_id: "2baf3032-4781-11ee-be56-0242ac120002"
+        reservation_date_time: "2023-12-31T10:30:00+09:00"
+
+  responses:
+    400-BadRequest:
+      description: "Bad Request"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message: { type: string, example: "Bad Request" }
+            required:
+              - message
+    403-Forbidden:
+      description: "Forbidden"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message: { type: string, example: "Forbidden" }
+            required:
+              - message
+    500-InternalServerError:
+      description: "Internal Server Error"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message: { type: string, example: "Internal Server Error" }
+            required:
+              - message
+
