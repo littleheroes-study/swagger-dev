@@ -88,6 +88,36 @@ paths:
         "500":
           $ref: "#/components/responses/500-InternalServerError"
 
+    put:
+      operationId: putReservation
+      summary: "Reservations 更新"
+      tags:
+        - reservation
+      description: "予約情報を更新する"
+      parameters:
+        - in: path
+          name: reservation_id
+          schema:
+            type: string
+          required: true
+      requestBody: 
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReservationInfo"
+      responses: 
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ReservationInfo"
+        "422":
+          $ref: "#/components/responses/422-UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/500-InternalServerError"
+
 components:
   schemas:
     ReservationInfo:
