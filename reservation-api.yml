@@ -39,6 +39,25 @@ paths:
           $ref: "#/components/responses/403-Forbidden"
         "500":
           $ref: "#/components/responses/500-InternalServerError"
+    post:
+      operationId: postReservations
+      summary: "Reservations 登録"
+      tags: [reservation]
+      description: "予約を登録する"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReservationInfo"
+      responses:
+        "200":
+          description: "登録成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReservationInfo"
+        "422":
+          $ref: "#/components/responses/422-UnprocessableEntity"
 
 components:
   schemas:
@@ -85,6 +104,22 @@ components:
               message: { type: string, example: "Forbidden" }
             required:
               - message
+    422-UnprocessableEntity:
+      description: "Unprocessable Entity"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message: { type: string, example: "Unprocessable Entity" }
+              errors:
+                type: object
+                properties:
+                  string:
+                    type: array
+                    items:
+                      type: string
+                      example: "hairdresser required"
     500-InternalServerError:
       description: "Internal Server Error"
       content:
