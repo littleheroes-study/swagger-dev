@@ -58,6 +58,35 @@ paths:
                 $ref: "#/components/schemas/ReservationInfo"
         "422":
           $ref: "#/components/responses/422-UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/500-InternalServerError"
+
+  /reservations/{reservationId}:
+    get:
+      operationId: getReservation
+      summary: "Reservations 取得"
+      tags: [reservation]
+      description: "予約情報を取得する"
+      parameters:
+        - in: path
+          name: reservation_id
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ReservationInfo"
+        "400":
+          $ref: "#/components/responses/400-BadRequest"
+        "403":
+          $ref: "#/components/responses/403-Forbidden"
+        "500":
+          $ref: "#/components/responses/500-InternalServerError"
 
 components:
   schemas:
@@ -77,11 +106,7 @@ components:
           description: "予約日時"
           type: string
           format: date-time
-      example:
-        hair_salon: "バーバー駒沢"
-        hairdresser: "山田太郎"
-        reservation_id: "2baf3032-4781-11ee-be56-0242ac120002"
-        reservation_date_time: "2023-12-31T10:30:00+09:00"
+          example: "YYYY/MM/DD"
 
   responses:
     400-BadRequest:
