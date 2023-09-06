@@ -6,11 +6,11 @@ info:
     # 説明
     * 美容室の予約、確認を行うAPI
     # 機能
-    - Reservations 一覧取得
-    - Reservations 登録
-    - Reservations 取得
-    - Reservations 更新
-    - Reservations 削除
+    - 予約 一覧取得
+    - 予約 登録
+    - 予約 取得
+    - 予約 更新
+    - 予約 削除
   version: "1.0.0"
 
 tags:
@@ -21,7 +21,7 @@ paths:
   /reservations:
     get:
       operationId: getReservations
-      summary: "Reservations 一覧取得"
+      summary: "予約 一覧取得"
       tags: [reservation]
       description: "予約一覧を取得する"
       responses:
@@ -41,7 +41,7 @@ paths:
           $ref: "#/components/responses/500-InternalServerError"
     post:
       operationId: postReservations
-      summary: "Reservations 登録"
+      summary: "予約 登録"
       tags: [reservation]
       description: "予約を登録する"
       requestBody:
@@ -64,7 +64,7 @@ paths:
   /reservations/{reservationId}:
     get:
       operationId: getReservation
-      summary: "Reservations 取得"
+      summary: "予約 取得"
       tags: [reservation]
       description: "予約情報を取得する"
       parameters:
@@ -92,7 +92,7 @@ paths:
 
     put:
       operationId: putReservation
-      summary: "Reservations 更新"
+      summary: "予約 更新"
       tags:
         - reservation
       description: "予約情報を更新する"
@@ -124,7 +124,7 @@ paths:
 
     delete:
       operationId: deleteReservation
-      summary: "Reservations 削除"
+      summary: "予約 削除"
       description: "予約情報を削除する"
       tags:
         - reservation
