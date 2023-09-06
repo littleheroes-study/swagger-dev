@@ -118,6 +118,24 @@ paths:
         "500":
           $ref: "#/components/responses/500-InternalServerError"
 
+    delete:
+      operationId: deleteReservation
+      summary: "Reservations 削除"
+      description: "予約情報を削除する"
+      tags:
+        - reservation
+      parameters:
+        - in: path
+          name: reservation_id
+          schema:
+            type: string
+          required: true
+      responses:
+        "204":
+          description: "削除成功"
+        "500":
+          $ref: "#/components/responses/500-InternalServerError"
+
 components:
   schemas:
     ReservationInfo:
