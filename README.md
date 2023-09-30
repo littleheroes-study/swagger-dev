@@ -145,6 +145,32 @@ paths:
 
 <details>
 <summary>POST：予約登録</summary>
+
+```
+paths:
+    /reservations
+        ...
+        post:
+            summary: "予約登録"
+            description: "予約を登録する"
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                customer_id:
+                                    type: integer
+                                    format: int64
+                                menu_id:
+                                    type: integer
+                                    format: int64
+                                stylist_id:
+                                    type: integer
+                                    format: int64
+                                is_first:
+                                    type: boolean
+```
 </details>
 
 <details>
