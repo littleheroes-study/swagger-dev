@@ -1,11 +1,11 @@
 openapi: "3.0.3"
 
 info:
-  title: "美容室予約"
+  title: "美容院予約API"
   description: |
-    # 説明
-    * 美容室の予約、確認を行うAPI
-    # 機能
+    ## 説明
+    * 美容院の予約、確認を行うAPI
+    ## 機能
     - 予約 一覧取得
     - 予約 登録
     - 予約 取得
@@ -13,17 +13,13 @@ info:
     - 予約 削除
   version: "1.0.0"
 
-tags:
-  - name: reservation
-    description: "予約機能"
-
 paths:
   /reservations:
     get:
-      operationId: getReservations
       summary: "予約 一覧取得"
-      tags: [reservation]
       description: "予約一覧を取得する"
+      tags:
+        - reservation
       responses:
         "200":
           description: "Success"
@@ -40,10 +36,10 @@ paths:
         "500":
           $ref: "#/components/responses/500-InternalServerError"
     post:
-      operationId: postReservations
       summary: "予約 登録"
-      tags: [reservation]
       description: "予約を登録する"
+      tags:
+        - reservation
       requestBody:
         content:
           application/json:
@@ -63,10 +59,10 @@ paths:
 
   /reservations/{reservationId}:
     get:
-      operationId: getReservation
-      summary: "予約 取得"
-      tags: [reservation]
-      description: "予約情報を取得する"
+      summary: "予約 詳細取得"
+      description: "予約を取得する"
+      tags:
+        - reservation
       parameters:
         - in: path
           name: reservation_id
@@ -91,11 +87,10 @@ paths:
           $ref: "#/components/responses/500-InternalServerError"
 
     put:
-      operationId: putReservation
       summary: "予約 更新"
+      description: "予約を更新する"
       tags:
         - reservation
-      description: "予約情報を更新する"
       parameters:
         - in: path
           name: reservation_id
@@ -123,9 +118,8 @@ paths:
           $ref: "#/components/responses/500-InternalServerError"
 
     delete:
-      operationId: deleteReservation
       summary: "予約 削除"
-      description: "予約情報を削除する"
+      description: "予約をキャンセルする"
       tags:
         - reservation
       parameters:
