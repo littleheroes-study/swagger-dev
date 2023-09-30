@@ -16,6 +16,11 @@ info|Info Object|**必須** APIに関するメタデータを提供
 </details>
 
 <details>
+<summary>基本的なデータ型</summary>
+</details>
+
+
+<details>
 <summary>OpenAPIバージョン指定</summary>
 
 ここではOpenAPIのバージョンを指定します。
@@ -42,8 +47,8 @@ openapi: "3.0.3"
 API自体のバージョンになります。
 ```
 info:
-    title: "予約管理API"
-    description: "予約機能を提供するAPI"
+    title: "美容院予約管理API"
+    description: "美容院予約機能を提供するAPI"
     version: "1.0.0#
 ```
 ※利用規約、連絡先、ライセンスを省いています。
@@ -66,4 +71,96 @@ servers:
         default: "8080"
 ```
 ※ローカルホストの8080番を定義しています。
+</details>
+
+<details>
+<summary>パスと操作の定義（Paths Object）</summary>
+
+APIのパスと操作、リクエスト・レスポンスを定義します。
+### Paths Object
+    * 個々のエンドポイントへの相対パスです。このフィールド名はスラッシュ（/）で始まる必要があります。
+    * パスは、Servers Objectのurlフィールドからの拡張されたURLに追加されます（相対URLの解決は行いません）。
+    * パステンプレートを使用することができます。URLのマッチングでは、具象的な（テンプレートを含まない）パスが、テンプレートを含むものよりも先にマッチされます。
+    * 同じ階層にあるがテンプレート名が異なるテンプレート化されたパスは存在してはいけません。曖昧なマッチングの場合、どちらを使用するかはツール次第です。
+
+> note
+>
+> ### パステンプレートのマッチング
+> 次のパスを想定すると、具体的な定義が最初に一致されます。
+> ```
+> /reservations/{reservationId}
+> /reservations/mine // このパスが採用される
+> ```
+> 次のパスは同一とみなされ、無効になります。
+> ```
+> /reservations/{reservationId}
+> /reservations/{mine}
+> ```
+>
+
+<details>
+<summary>Path Item Object</summary>
+
+単一のパスで利用可能な操作を定義します。
+
+このフィールドに書ける代表的なフィールド名は以下になります。
+* summary
+* description
+* get
+* put
+* post
+* delete
+
+### 各エンドポイントの記述
+
+<details>
+<summary>GET：一覧取得</summary>
+
+予約可能な美容院の一覧を取得するAPIを定義していきます。
+
+OpenAPIドキュメントは以下になります。
+```openapi.yml
+paths:
+  /reservations:
+    get:
+        summary: "一覧取得"
+        description: "予約可能な美容院一覧を取得する"
+        parameters:
+            - in: query
+                name: page
+                schema: { type: integer }
+                required: true
+        responses:
+            "200":
+                description: "一覧"
+                content:
+                application/json:
+                    schema:
+                    type: object
+                    properties:
+                        last_page: { type: integer }
+                        data: { type: array, items: {} }
+```
+</details>
+
+<details>
+<summary>POST：予約登録</summary>
+</details>
+
+<details>
+<summary>GET：予約詳細取得</summary>
+</details>
+
+<details>
+<summary>PUT：予約変更</summary>
+</details>
+
+<details>
+<summary>DELETE：予約キャンセル</summary>
+</details>
+
+
+</details>
+
+
 </details>
