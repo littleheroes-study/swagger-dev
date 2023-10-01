@@ -43,7 +43,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ReservationInfo'
+                  $ref: '#/components/schemas/Reservation'
         '400':
           $ref: '#/components/responses/400-BadRequest'
         '403':
@@ -59,14 +59,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ReservationInfo'
+              $ref: '#/components/schemas/Reservation'
       responses:
         '200':
           description: 登録成功
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ReservationInfo'
+                $ref: '#/components/schemas/Reservation'
         '422':
           $ref: '#/components/responses/422-UnprocessableEntity'
         '500':
@@ -91,7 +91,7 @@ paths:
             application/json:
               schema:
                 type: object
-                $ref: '#/components/schemas/ReservationInfo'
+                $ref: '#/components/schemas/Reservation'
         '400':
           $ref: '#/components/responses/400-BadRequest'
         '403':
@@ -116,7 +116,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ReservationInfo'
+              $ref: '#/components/schemas/Reservation'
       responses: 
         '200':
           description: 成功
@@ -124,7 +124,7 @@ paths:
             application/json:
               schema:
                 type: object
-                $ref: '#/components/schemas/ReservationInfo'
+                $ref: '#/components/schemas/Reservation'
         '404':
           $ref: '#/components/responses/404-NotFound'
         '422':
@@ -153,23 +153,132 @@ paths:
 
 components:
   schemas:
-    ReservationInfo:
+    Reservation:
       type: object
       properties:
-        hair_salon:
-          description: 店舗名
-          type: string
-        hairdresser:
-          description: 美容師
-          type: string
         id:
           description: 予約ID
+          type: integer
+          format: int64
+        salon:
+          $ref: '#/components/schemas/Salon'
+        stylist:
+          $ref: '#/components/schemas/Stylist'
+        menu:
+          $ref: '#/components/schemas/Menu'
+    Menu:
+      description: メニュー情報
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        salon_id:
+          type: integer
+          format: int64
+        name:
           type: string
-        reservation_date_time:
-          description: 予約日時
+        description:
           type: string
-          format: date-time
-          example: 'YYYY/MM/DD'
+        operation_time:
+          type: integer
+        deadline_time:
+          type: string
+        amount:
+          type: integer
+        is_coupon:
+          type: boolean
+        conditions:
+          type: string
+          enum:
+            - male
+            - female
+            - anyone
+    Salon:
+      description: サロン情報
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        zipcode:
+          type: string
+        address:
+          type: string
+        phone_number:
+          type: string
+        start_time:
+          type: string
+        closing_time:
+          type: string
+        holiday:
+          type: string
+        payment_methods:
+          type: string
+    Stylist:
+      description: スタイリスト情報
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        salon_id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        name_kana:
+          type: string
+        gender:
+          type: string
+          enum:
+            - male
+            - female
+        appoint_fee:
+          type: string
+        stylist_history:
+          type: integer
+        skill:
+          type: string
+    Customers:
+      description: 会員情報
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        name_kana:
+          type: string
+        gender:
+          type: string
+          enum:
+            - male
+            - female
+        uuid:
+          description: 会員識別番号
+          type: string
+        status:
+          type: string
+          enum:
+            - temporary
+            - member
+        email:
+          type: string
+        phone_number:
+          type: string
+        password:
+          type: string
+          format: password
+        zipcode:
+          type: string
+        address:
+          type: string
 
   responses:
     400-BadRequest:
