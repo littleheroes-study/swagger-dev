@@ -1,7 +1,7 @@
-openapi: '3.0.3'
+openapi: 3.0.3
 
 info:
-  title: '美容院予約API'
+  title: 美容院予約API
   description: |
     ## 説明
     * 美容院の予約、確認を行うAPI
@@ -24,7 +24,7 @@ paths:
         '200':
           description: 成功
           content:
-            'application/json':
+            application/json:
               schema:
                 type: array
                 items:
@@ -42,14 +42,14 @@ paths:
         - reservation
       requestBody:
         content:
-          'application/json':
+          application/json:
             schema:
               $ref: '#/components/schemas/ReservationInfo'
       responses:
         '200':
           description: 登録成功
           content:
-            'application/json':
+            application/json:
               schema:
                 $ref: '#/components/schemas/ReservationInfo'
         '422':
@@ -73,7 +73,7 @@ paths:
         '200':
           description: 成功
           content:
-            'application/json':
+            application/json:
               schema:
                 type: object
                 $ref: '#/components/schemas/ReservationInfo'
@@ -92,21 +92,21 @@ paths:
       tags:
         - reservation
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           schema:
             type: string
           required: true
       requestBody: 
         content:
-          'application/json':
+          application/json:
             schema:
               $ref: '#/components/schemas/ReservationInfo'
       responses: 
         '200':
           description: 成功
           content:
-            'application/json':
+            application/json:
               schema:
                 type: object
                 $ref: '#/components/schemas/ReservationInfo'
@@ -123,8 +123,8 @@ paths:
       tags:
         - reservation
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           schema:
             type: string
           required: true
@@ -160,41 +160,49 @@ components:
     400-BadRequest:
       description: Bad Request
       content:
-        'application/json':
+        application/json:
           schema:
             type: object
             properties:
-              message: { type: string, example: 'Bad Request' }
+              message:
+                type: string
+                example: Bad Request
             required:
               - message
     403-Forbidden:
       description: Forbidden
       content:
-        'application/json':
+        application/json:
           schema:
             type: object
             properties:
-              message: { type: string, example: 'Forbidden' }
+              message:
+                type: string
+                example: Forbidden
             required:
               - message
     404-NotFound:
       description: Not Found
       content:
-        'application/json':
+        application/json:
           schema:
             type: object
             properties:
-              message: { type: string, example: 'Not Found' }
+              message:
+                type: string
+                example: Not Found
             required:
               - message
     422-UnprocessableEntity:
       description: Unprocessable Entity
       content:
-        'application/json':
+        application/json:
           schema:
             type: object
             properties:
-              message: { type: string, example: 'Unprocessable Entity' }
+              message:
+                type: string
+                example: Unprocessable Entity
               errors:
                 type: object
                 properties:
@@ -202,15 +210,17 @@ components:
                     type: array
                     items:
                       type: string
-                      example: 'hairdresser required'
+                      example: hairdresser required
     500-InternalServerError:
       description: Internal Server Error
       content:
-        'application/json':
+        application/json:
           schema:
             type: object
             properties:
-              message: { type: string, example: 'Internal Server Error' }
+              message:
+                type: string
+                example: Internal Server Error
             required:
               - message
 
