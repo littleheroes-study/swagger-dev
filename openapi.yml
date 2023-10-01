@@ -22,7 +22,7 @@ paths:
         - reservation
       responses:
         "200":
-          description: "Success"
+          description: "成功"
           content:
             application/json:
               schema:
@@ -57,7 +57,7 @@ paths:
         "500":
           $ref: "#/components/responses/500-InternalServerError"
 
-  /reservations/{reservationId}:
+  /reservations/{id}:
     get:
       summary: "予約 詳細取得"
       description: "予約を取得する"
@@ -65,13 +65,13 @@ paths:
         - reservation
       parameters:
         - in: path
-          name: reservation_id
+          name: id
           schema:
             type: string
           required: true
       responses:
         "200":
-          description: "Success"
+          description: "成功"
           content:
             application/json:
               schema:
@@ -93,7 +93,7 @@ paths:
         - reservation
       parameters:
         - in: path
-          name: reservation_id
+          name: id
           schema:
             type: string
           required: true
@@ -104,7 +104,7 @@ paths:
               $ref: "#/components/schemas/ReservationInfo"
       responses: 
         "200":
-          description: "Success"
+          description: "成功"
           content:
             application/json:
               schema:
@@ -124,7 +124,7 @@ paths:
         - reservation
       parameters:
         - in: path
-          name: reservation_id
+          name: id
           schema:
             type: string
           required: true
@@ -147,7 +147,7 @@ components:
         hairdresser:
           description: "美容師"
           type: string
-        reservation_id:
+        id:
           description: "予約ID"
           type: string
         reservation_date_time:
