@@ -13,6 +13,21 @@ info:
     - 予約 削除
   version: 1.0.0
 
+servers:
+  - url: 'http://localhost:{port}/{basePath}/api'
+    description: 開発環境サーバー
+    variables:
+      port:
+        enum:
+          - '8080'
+          - '80'
+        default: '8080'
+      basePath:
+        enum:
+          - 'v1'
+          - 'v2'
+        default: 'v1'
+
 paths:
   /reservations:
     get:
