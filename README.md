@@ -88,12 +88,12 @@ APIのパスと操作、リクエスト・レスポンスを定義します。
 > ### パステンプレートのマッチング
 > 次のパスを想定すると、具体的な定義が最初に一致されます。
 > ```
-> /reservations/{reservationId}
+> /reservations/{id}
 > /reservations/mine // このパスが採用される
 > ```
 > 次のパスは同一とみなされ、無効になります。
 > ```
-> /reservations/{reservationId}
+> /reservations/{id}
 > /reservations/{mine}
 > ```
 >
@@ -146,7 +146,7 @@ paths:
 <details>
 <summary>POST：予約登録</summary>
 
-```
+```openapi.yml
 paths:
     /reservations
         ...
@@ -175,18 +175,98 @@ paths:
 
 <details>
 <summary>GET：予約詳細取得</summary>
+
+```openapi.yml
+patsh:
+    /reservations/{id}
+        ...
+        get:
+            summary: "予約詳細取得"
+            description: "予約詳細を取得する"
+            parameters:
+                - in: path
+                  name: id
+                  schema:
+                    type: integer
+                    format: int64
+                  required: true
+            responses:
+                "200":
+                    description: "成功"
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    ...
+```
 </details>
 
 <details>
 <summary>PUT：予約変更</summary>
+
+```openapi.yml
+paths:
+    /reservations/{id}
+        ...
+        put:
+            summary: 予約 更新
+            description: 予約を更新する
+            parameters:
+                - name: id
+                  in: path
+                  schema:
+                    type: integer
+                    format: int64
+                  required: true
+            requestBody
+                content:
+                    'application/json':
+                        schema:
+                            type: object
+                            properties:
+                                customer_id:
+                                    type: integer
+                                    format: int64
+                                    ...
+            responses:
+                '200':
+                    description: 成功
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    id:
+                                        type: integer
+                                        format: int64
+                                        ...
+```
 </details>
 
 <details>
-<summary>DELETE：予約キャンセル</summary>
+<summary>DELETE：予約情報削除</summary>
+
+```openapi.yml
+paths:
+    /reservations/{id}
+        ...
+        put:
+            summary: 予約 削除
+            description: 予約を削除する
+            parameters:
+                - name: id
+                  in: path
+                  schema:
+                    type: integer
+                    format: int64
+                  required: true
+            responses:
+                '204':
+                    description: 成功
+```
 </details>
 
-
 </details>
-
 
 </details>
