@@ -1,16 +1,8 @@
 openapi: 3.0.3
 
 info:
-  title: 美容院予約API
-  description: |
-    ## 説明
-    * 美容院の予約、確認を行うAPI
-    ## 機能
-    - 予約 一覧取得
-    - 予約 登録
-    - 予約 取得
-    - 予約 更新
-    - 予約 削除
+  title: サロンAPI
+  description: サロンのCRUDを行うAPI
   version: 1.0.0
 
 servers:
@@ -29,12 +21,12 @@ servers:
         default: 'v1'
 
 paths:
-  /reservations:
+  /salons:
     get:
-      summary: 予約 一覧取得
-      description: 予約一覧を取得する
+      summary: サロン 一覧取得
+      description: サロン一覧を取得する
       tags:
-        - reservation
+        - salon
       responses:
         '200':
           description: 成功
@@ -43,7 +35,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Reservation'
+                  $ref: '#/components/schemas/Index'
         '400':
           $ref: '#/components/responses/400-BadRequest'
         '403':
@@ -51,33 +43,32 @@ paths:
         '500':
           $ref: '#/components/responses/500-InternalServerError'
     post:
-      summary: 予約 登録
-      description: 予約を登録する
+      summary: サロン 登録
+      description: サロンを登録する
       tags:
-        - reservation
+        - salon
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Reservation'
+              $ref: '#/components/schemas/Detail'
       responses:
         '200':
           description: 登録成功
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Reservation'
+                $ref: '#/components/schemas/Detail'
         '422':
           $ref: '#/components/responses/422-UnprocessableEntity'
         '500':
           $ref: '#/components/responses/500-InternalServerError'
-
-  /reservations/{id}:
+  /salons/{id}:
     get:
-      summary: 予約 詳細取得
-      description: 予約を取得する
+      summary: サロン 詳細取得
+      description: サロンを取得する
       tags:
-        - reservation
+        - salon
       parameters:
         - name: id
           in: path
@@ -91,7 +82,7 @@ paths:
             application/json:
               schema:
                 type: object
-                $ref: '#/components/schemas/Reservation'
+                $ref: '#/components/schemas/Detail'
         '400':
           $ref: '#/components/responses/400-BadRequest'
         '403':
@@ -100,12 +91,11 @@ paths:
           $ref: '#/components/responses/404-NotFound'
         '500':
           $ref: '#/components/responses/500-InternalServerError'
-
     put:
-      summary: 予約 更新
-      description: 予約を更新する
+      summary: サロン 更新
+      description: サロンを更新する
       tags:
-        - reservation
+        - salon
       parameters:
         - name: id
           in: path
@@ -116,7 +106,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Reservation'
+              $ref: '#/components/schemas/Detail'
       responses: 
         '200':
           description: 成功
@@ -124,19 +114,18 @@ paths:
             application/json:
               schema:
                 type: object
-                $ref: '#/components/schemas/Reservation'
+                $ref: '#/components/schemas/Detail'
         '404':
           $ref: '#/components/responses/404-NotFound'
         '422':
           $ref: '#/components/responses/422-UnprocessableEntity'
         '500':
           $ref: '#/components/responses/500-InternalServerError'
-
     delete:
-      summary: 予約 削除
-      description: 予約をキャンセルする
+      summary: サロン 削除
+      description: サロンを削除する
       tags:
-        - reservation
+        - salon
       parameters:
         - name: id
           in: path
@@ -150,52 +139,21 @@ paths:
           $ref: '#/components/responses/404-NotFound'
         '500':
           $ref: '#/components/responses/500-InternalServerError'
-
 components:
   schemas:
-    Reservation:
+    Index:
+      description: サロン一覧情報
       type: object
       properties:
         id:
-          description: 予約ID
-          type: integer
-          format: int64
-        salon:
-          $ref: '#/components/schemas/Salon'
-        stylist:
-          $ref: '#/components/schemas/Stylist'
-        menu:
-          $ref: '#/components/schemas/Menu'
-    Menu:
-      description: メニュー情報
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        salon_id:
           type: integer
           format: int64
         name:
           type: string
         description:
           type: string
-        operation_time:
-          type: integer
-        deadline_time:
-          type: string
-        amount:
-          type: integer
-        is_coupon:
-          type: boolean
-        conditions:
-          type: string
-          enum:
-            - male
-            - female
-            - anyone
-    Salon:
-      description: サロン情報
+    Detail:
+      description: サロン個別情報
       type: object
       properties:
         id:
@@ -219,67 +177,6 @@ components:
           type: string
         payment_methods:
           type: string
-    Stylist:
-      description: スタイリスト情報
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        salon_id:
-          type: integer
-          format: int64
-        name:
-          type: string
-        name_kana:
-          type: string
-        gender:
-          type: string
-          enum:
-            - male
-            - female
-        appoint_fee:
-          type: string
-        stylist_history:
-          type: integer
-        skill:
-          type: string
-    Customers:
-      description: 会員情報
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        name:
-          type: string
-        name_kana:
-          type: string
-        gender:
-          type: string
-          enum:
-            - male
-            - female
-        uuid:
-          description: 会員識別番号
-          type: string
-        status:
-          type: string
-          enum:
-            - temporary
-            - member
-        email:
-          type: string
-        phone_number:
-          type: string
-        password:
-          type: string
-          format: password
-        zipcode:
-          type: string
-        address:
-          type: string
-
   responses:
     400-BadRequest:
       description: Bad Request
