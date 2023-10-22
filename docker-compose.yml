@@ -20,3 +20,8 @@ services:
       SWAGGER_JSON: /openapi/openapi.yml
     volumes:
       - ./openapi.yml:/openapi/openapi.yml
+
+# APIアプリケーションと連携する場合以下をアンコメントしてください
+# networks:
+#   phpunit_web:
+#     external: true
