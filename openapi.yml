@@ -1,0 +1,221 @@
+openapi: 3.1.0
+
+info:
+  title: サロンAPI
+  description: サロンのCRUDを行うAPI
+  version: 1.0.0
+
+servers:
+  - url: 'http://localhost:{port}'
+    description: 開発環境サーバー
+    variables:
+      port:
+        enum:
+          - '80'
+          - '8080'
+        default: '8080'
+
+paths:
+  /salons:
+    get:
+      summary: サロン 一覧取得
+      description: サロン一覧を取得する
+      tags:
+        - salon
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      format: int64
+                      examples: 
+                        - 66351
+                    name:
+                      type: string
+                      examples: 
+                        - サロンA
+                    description:
+                      type: string
+                      examples: 
+                        - サロンAに関する店舗詳細説明です。
+        '400':
+          $ref: '#/components/responses/400-BadRequest'
+        '403':
+          $ref: '#/components/responses/403-Forbidden'
+    post:
+      summary: サロン 登録
+      description: サロンを登録する
+      tags:
+        - salon
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Salon'
+      responses:
+        '200':
+          description: 登録成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Salon'
+        '422':
+          $ref: '#/components/responses/422-UnprocessableEntity'
+  /salons/{id}:
+    get:
+      summary: サロン 詳細取得
+      description: サロンを取得する
+      tags:
+        - salon
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Salon'
+        '400':
+          $ref: '#/components/responses/400-BadRequest'
+        '403':
+          $ref: '#/components/responses/403-Forbidden'
+        '404':
+          $ref: '#/components/responses/404-NotFound'
+    put:
+      summary: サロン 更新
+      description: サロンを更新する
+      tags:
+        - salon
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      requestBody: 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Salon'
+      responses: 
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Salon'
+        '404':
+          $ref: '#/components/responses/404-NotFound'
+        '422':
+          $ref: '#/components/responses/422-UnprocessableEntity'
+    delete:
+      summary: サロン 削除
+      description: サロンを削除する
+      tags:
+        - salon
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '204':
+          description: 削除成功
+        '404':
+          $ref: '#/components/responses/404-NotFound'
+
+components:
+  schemas:
+    Salon:
+      description: サロン個別情報
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        zipcode:
+          type: string
+        address:
+          type: string
+        phone_number:
+          type: string
+        start_time:
+          type: string
+        closing_time:
+          type: string
+        holiday:
+          type: string
+        payment_methods:
+          type: string
+  responses:
+    400-BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+              - message
+            examples:
+              - message: Bad Request
+    403-Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+              - message
+            examples: 
+              - message: Forbidden
+    404-NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+              - message
+            examples:
+              - message: Not Found
+    422-UnprocessableEntity:
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              errors:
+                type: string
+            examples:
+              - message: Unprocessable Entity
+              - errors: "hairdresser required"
