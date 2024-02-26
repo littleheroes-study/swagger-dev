@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.0.3
 
 info:
   title: サロンAPI
@@ -6,14 +6,19 @@ info:
   version: 1.0.0
 
 servers:
-  - url: 'http://localhost:{port}'
+  - url: 'http://localhost:{port}/{basePath}/api'
     description: 開発環境サーバー
     variables:
       port:
         enum:
-          - '80'
           - '8080'
+          - '80'
         default: '8080'
+      basePath:
+        enum:
+          - 'v1'
+          - 'v2'
+        default: 'v1'
 
 paths:
   /salons:
@@ -30,25 +35,13 @@ paths:
               schema:
                 type: array
                 items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                      format: int64
-                      examples: 
-                        - 66351
-                    name:
-                      type: string
-                      examples: 
-                        - サロンA
-                    description:
-                      type: string
-                      examples: 
-                        - サロンAに関する店舗詳細説明です。
+                  $ref: '#/components/schemas/Index'
         '400':
           $ref: '#/components/responses/400-BadRequest'
         '403':
           $ref: '#/components/responses/403-Forbidden'
+        '500':
+          $ref: '#/components/responses/500-InternalServerError'
     post:
       summary: サロン 登録
       description: サロンを登録する
@@ -58,16 +51,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Salon'
+              $ref: '#/components/schemas/Detail'
       responses:
         '200':
           description: 登録成功
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Salon'
+                $ref: '#/components/schemas/Detail'
         '422':
           $ref: '#/components/responses/422-UnprocessableEntity'
+        '500':
+          $ref: '#/components/responses/500-InternalServerError'
   /salons/{id}:
     get:
       summary: サロン 詳細取得
@@ -86,13 +81,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Salon'
+                type: object
+                $ref: '#/components/schemas/Detail'
         '400':
           $ref: '#/components/responses/400-BadRequest'
         '403':
           $ref: '#/components/responses/403-Forbidden'
         '404':
           $ref: '#/components/responses/404-NotFound'
+        '500':
+          $ref: '#/components/responses/500-InternalServerError'
     put:
       summary: サロン 更新
       description: サロンを更新する
@@ -108,7 +106,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Salon'
+              $ref: '#/components/schemas/Detail'
       responses: 
         '200':
           description: 成功
@@ -116,11 +114,13 @@ paths:
             application/json:
               schema:
                 type: object
-                $ref: '#/components/schemas/Salon'
+                $ref: '#/components/schemas/Detail'
         '404':
           $ref: '#/components/responses/404-NotFound'
         '422':
           $ref: '#/components/responses/422-UnprocessableEntity'
+        '500':
+          $ref: '#/components/responses/500-InternalServerError'
     delete:
       summary: サロン 削除
       description: サロンを削除する
@@ -137,10 +137,22 @@ paths:
           description: 削除成功
         '404':
           $ref: '#/components/responses/404-NotFound'
-
+        '500':
+          $ref: '#/components/responses/500-InternalServerError'
 components:
   schemas:
-    Salon:
+    Index:
+      description: サロン一覧情報
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+    Detail:
       description: サロン個別情報
       type: object
       properties:
@@ -175,10 +187,9 @@ components:
             properties:
               message:
                 type: string
+                example: Bad Request
             required:
               - message
-            examples:
-              - message: Bad Request
     403-Forbidden:
       description: Forbidden
       content:
@@ -188,10 +199,9 @@ components:
             properties:
               message:
                 type: string
+                example: Forbidden
             required:
               - message
-            examples: 
-              - message: Forbidden
     404-NotFound:
       description: Not Found
       content:
@@ -201,10 +211,9 @@ components:
             properties:
               message:
                 type: string
+                example: Not Found
             required:
               - message
-            examples:
-              - message: Not Found
     422-UnprocessableEntity:
       description: Unprocessable Entity
       content:
@@ -214,8 +223,25 @@ components:
             properties:
               message:
                 type: string
+                example: Unprocessable Entity
               errors:
+                type: object
+                properties:
+                  string:
+                    type: array
+                    items:
+                      type: string
+                      example: hairdresser required
+    500-InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
                 type: string
-            examples:
-              - message: Unprocessable Entity
-              - errors: "hairdresser required"
+                example: Internal Server Error
+            required:
+              - message
+
